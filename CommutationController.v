@@ -1,6 +1,6 @@
 module CommutationControl(
 	input clk,
-	input [2:0]UI, 
+	input [2:0]UI, //user input
 	input [2:0]HS, //Hall Sensors 
 	output [5:0]PT //6 Power Transistor control signals
 );
