@@ -19,63 +19,63 @@ module CommutationControl_testbench();
 			
 		 //all off except the HS sensors
 		#5 UI[2:0]=3'b000;HS=3'b100; //state 1
-		#5 UI[2:0]=3'b000;HS=3'b110; //state 2
-		#5 UI[2:0]=3'b000;HS=3'b010; //state 3
-		#5 UI[2:0]=3'b000;HS=3'b011; //state 4
-		#5 UI[2:0]=3'b000;HS=3'b001; //state 5
-		#5 UI[2:0]=3'b000;HS=3'b101; //state 6
+		#5 HS=3'b110; //state 2
+		#5 HS=3'b010; //state 3
+		#5 HS=3'b011; //state 4
+		#5 HS=3'b001; //state 5
+		#5 HS=3'b101; //state 6
 		
 		 // ccw on with HS sensors
 		#5 UI[2:0]=3'b010;HS=3'b101; //state 6
-		#5 UI[2:0]=3'b010;HS=3'b100; //state 1
-		#5 UI[2:0]=3'b010;HS=3'b110; //state 2
-		#5 UI[2:0]=3'b010;HS=3'b010; //state 3
-		#5 UI[2:0]=3'b010;HS=3'b011; //state 4
-		#5 UI[2:0]=3'b010;HS=3'b001; //state 5
-		#5 UI[2:0]=3'b010;HS=3'b101; //state 6
+		#5 HS=3'b100; //state 1
+		#5 HS=3'b110; //state 2
+		#5 HS=3'b010; //state 3
+		#5 HS=3'b011; //state 4
+		#5 HS=3'b001; //state 5
+		#5 HS=3'b101; //state 6
 		
 		#5 UI[2:0]=3'b000;HS=3'b101; //state 6 with all off
 		
 		// cw on with HS sensors
 		#5 UI[2:0]=3'b100;HS=3'b101; //state 6
-		#5 UI[2:0]=3'b100;HS=3'b001; //state 5
-		#5 UI[2:0]=3'b100;HS=3'b011; //state 4
-		#5 UI[2:0]=3'b100;HS=3'b010; //state 3
-		#5 UI[2:0]=3'b100;HS=3'b110; //state 2
-		#5 UI[2:0]=3'b100;HS=3'b100; //state 1
+		#5 HS=3'b001; //state 5
+		#5 HS=3'b011; //state 4
+		#5 HS=3'b010; //state 3
+		#5 HS=3'b110; //state 2
+		#5 HS=3'b100; //state 1
 		
 		// Regen Break Two(cw and ccw) on with HS sensors
 		#5 UI[2:0]=3'b110;HS=3'b101; //state 6
-		#5 UI[2:0]=3'b110;HS=3'b001; //state 5
-		#5 UI[2:0]=3'b110;HS=3'b011; //state 4
-		#5 UI[2:0]=3'b110;HS=3'b010; //state 3
-		#5 UI[2:0]=3'b110;HS=3'b110; //state 2
-		#5 UI[2:0]=3'b110;HS=3'b100; //state 1
+		#5 HS=3'b001; //state 5
+		#5 HS=3'b011; //state 4
+		#5 HS=3'b010; //state 3
+		#5 HS=3'b110; //state 2
+		#5 HS=3'b100; //state 1
 		
-		#5 UI[2:0]=3'b001;HS=3'b100; //state 1
+		#5 UI[2:0]=3'b000;HS=3'b100; //state 1
 		
 		//Regen Break One on with HS sensors
 		#5 UI[2:0]=3'b001;HS=3'b100; //state 1
-		#5 UI[2:0]=3'b001;HS=3'b110; //state 2
-		#5 UI[2:0]=3'b001;HS=3'b010; //state 3
-		#5 UI[2:0]=3'b001;HS=3'b011; //state 4
-		#5 UI[2:0]=3'b001;HS=3'b001; //state 5
-		#5 UI[2:0]=3'b001;HS=3'b101; //state 6
+		#5 HS=3'b110; //state 2
+		#5 HS=3'b010; //state 3
+		#5 HS=3'b011; //state 4
+		#5 HS=3'b001; //state 5
+		#5 HS=3'b101; //state 6
 		
 		//regen break and cw and ccw on with HS sensors should output all off
 		#5 UI[2:0]=3'b111;HS=3'b100; //state 1
-		#5 UI[2:0]=3'b111;HS=3'b110; //state 2
-		#5 UI[2:0]=3'b111;HS=3'b010; //state 3
-		#5 UI[2:0]=3'b111;HS=3'b011; //state 4
-		#5 UI[2:0]=3'b111;HS=3'b001; //state 5
-		#5 UI[2:0]=3'b111;HS=3'b101; //state 6
+		#5 HS=3'b110; //state 2
+		#5 HS=3'b010; //state 3
+		#5 HS=3'b011; //state 4
+		#5 HS=3'b001; //state 5
+		#5 HS=3'b101; //state 6
 		
 		#5 UI[2:0]=3'b101;HS=3'b100; //state 1
-		#5 UI[2:0]=3'b101;HS=3'b110; //state 2
-		#5 UI[2:0]=3'b101;HS=3'b010; //state 3
-		#5 UI[2:0]=3'b101;HS=3'b011; //state 4
-		#5 UI[2:0]=3'b101;HS=3'b001; //state 5
-		#5 UI[2:0]=3'b101;HS=3'b101; //state 6
+		#5 HS=3'b110; //state 2
+		#5 HS=3'b010; //state 3
+		#5 HS=3'b011; //state 4
+		#5 HS=3'b001; //state 5
+		#5 HS=3'b101; //state 6
 		
 		#0 $finish
 	end
