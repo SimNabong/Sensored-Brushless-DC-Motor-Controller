@@ -1,13 +1,13 @@
 module CommutationControl(
 	input clk,
-	input [2:0]UI, //user input
-	input [2:0]HS, //Hall Sensors 
-	output [5:0]PT //6 Power Transistor control signals
+	input [2:0]user_input, //user input
+	input [2:0]hall_sensor, //Hall sensors 
+	output [5:0]bridge_signal //6 Power Transistor control signals
 );
 	/*
-	  UI[0](Regen Break One) or UI[1]&UI[2](Regen Break Two)
-	  UI[1] is clockwise spin
-	  UI[2] is counter-cw spin
+	  user_input[0](Regen Break One) or user_input[1]&user_input[2](Regen Break Two)
+	  user_input[1] is clockwise spin
+	  user_input[2] is counter-cw spin
 	  HS[0],HS[1],HS[2] are the HS sensor signals
 	*/	
 	
@@ -20,20 +20,23 @@ module CommutationControl(
 	reg [1:0]Fr = 2'd0; //registers for delays
 
 
-	assign Aw = ~HS[0]&HS[2]&~UI[0]&UI[2] | ~HS[1]&HS[2]&~UI[0]&UI[1] | ~HS[0]&HS[1]&~UI[0]&UI[1]&UI[2] | HS[0]&~HS[1]&~UI[0]&UI[1]&UI[2] | HS[0]&~HS[2]&~UI[0]&UI[1]&UI[2] | HS[1]&~HS[2]&~UI[0]&UI[1]&UI[2];
+	assign Aw = ~hall_sensor[0]&hall_sensor[1]&user_input[0]&~user_input[2] | ~hall_sensor[0]&hall_sensor[1]&user_input[0]&~user_input[1] | ~hall_sensor[0]&hall_sensor[2]&user_input[0]&~user_input[1] | hall_sensor[0]&~hall_sensor[2]&user_input[0]&~user_input[2] | ~hall_sensor[1]&hall_sensor[2]&user_input[0]&~user_input[1] | ~hall_sensor[0]&hall_sensor[2]&user_input[0]&~user_input[2] | hall_sensor[0]&~hall_sensor[1]&user_input[0]&~user_input[1] | hall_sensor[0]&~hall_sensor[2]&user_input[1]&~user_input[2] | ~hall_sensor[0]&hall_sensor[2]&~user_input[1]&user_input[2] | ~hall_sensor[1]&hall_sensor[2]&user_input[0]&~user_input[2] | hall_sensor[1]&~hall_sensor[2]&user_input[0]&~user_input[2] | hall_sensor[0]&~hall_sensor[1]&user_input[0]&~user_input[2] | hall_sensor[1]&~hall_sensor[2]&user_input[0]&~user_input[1] | hall_sensor[0]&~hall_sensor[2]&user_input[0]&~user_input[1];
 	
-	assign Bw = HS[1]&~HS[2]&UI[0]&~UI[1]&~UI[2] | ~HS[1]&HS[2]&UI[0]&~UI[1]&~UI[2] | HS[0]&~HS[2]&UI[0]&~UI[1]&~UI[2] | HS[0]&~HS[2]&~UI[0]&~UI[1]&UI[2] | ~HS[0]&HS[2]&UI[0]&~UI[1]&~UI[2] | ~HS[0]&HS[1]&UI[0]&~UI[1]&~UI[2] | HS[1]&~HS[2]&~UI[0]&UI[1]&~UI[2] | HS[0]&~HS[1]&UI[0]&~UI[1]&~UI[2];
+	assign Bw = ~hall_sensor[0]&hall_sensor[2]&user_input[1]&user_input[2] | hall_sensor[0]&~hall_sensor[2]&user_input[1]&user_input[2] | ~hall_sensor[1]&hall_sensor[2]&user_input[1]&user_input[2] | hall_sensor[0]&~hall_sensor[1]&user_input[1]&user_input[2] | hall_sensor[1]&~hall_sensor[2]&user_input[1]&user_input[2] | hall_sensor[0]&~hall_sensor[2]&~user_input[0]&user_input[2] | ~hall_sensor[0]&hall_sensor[1]&user_input[1]&user_input[2] | ~hall_sensor[0]&hall_sensor[2]&~user_input[0]&user_input[1];
 	
-	assign Cw = HS[0]&~HS[1]&~UI[0]&UI[1]&UI[2] | ~HS[1]&HS[2]&~UI[0]&UI[1]&UI[2] | ~HS[0]&HS[1]&~UI[0]&UI[1]&UI[2] | HS[1]&~HS[2]&~UI[0]&UI[2] | HS[0]&~HS[2]&~UI[0]&UI[1] | ~HS[0]&HS[2]&~UI[0]&UI[1]&UI[2];
+	assign Cw = ~hall_sensor[1]&hall_sensor[2]&user_input[0]&~user_input[2] | ~hall_sensor[0]&hall_sensor[2]&user_input[0]&~user_input[1] | ~hall_sensor[1]&hall_sensor[2]&user_input[0]&~user_input[1] | hall_sensor[0]&~hall_sensor[2]&user_input[0]&~user_input[1] | hall_sensor[0]&~hall_sensor[1]&user_input[0]&~user_input[2] | ~hall_sensor[0]&hall_sensor[1]&user_input[0]&~user_input[1] | ~hall_sensor[0]&hall_sensor[1]&user_input[0]&~user_input[2] | ~hall_sensor[1]&hall_sensor[2]&user_input[1]&~user_input[2] | hall_sensor[1]&~hall_sensor[2]&user_input[0]&~user_input[2] | hall_sensor[1]&~hall_sensor[2]&~user_input[1]&user_input[2] | hall_sensor[1]&~hall_sensor[2]&user_input[0]&~user_input[1] | hall_sensor[0]&~hall_sensor[1]&user_input[0]&~user_input[1] | hall_sensor[0]&~hall_sensor[2]&user_input[0]&~user_input[2] | ~hall_sensor[0]&hall_sensor[2]&user_input[0]&~user_input[2];
 	
-	assign Dw = ~HS[0]&HS[1]&UI[0]&~UI[1]&~UI[2] | HS[0]&~HS[1]&UI[0]&~UI[1]&~UI[2] | ~HS[0]&HS[2]&UI[0]&~UI[1]&~UI[2] | ~HS[1]&HS[2]&~UI[0]&~UI[1]&UI[2] | ~HS[1]&HS[2]&UI[0]&~UI[1]&~UI[2] | HS[1]&~HS[2]&UI[0]&~UI[1]&~UI[2] | ~HS[0]&HS[2]&~UI[0]&UI[1]&~UI[2] | HS[0]&~HS[2]&UI[0]&~UI[1]&~UI[2];
+	assign Dw = ~hall_sensor[1]&hall_sensor[2]&~user_input[0]&user_input[2] | ~hall_sensor[0]&hall_sensor[2]&user_input[1]&user_input[2] | ~hall_sensor[0]&hall_sensor[1]&user_input[1]&user_input[2] | hall_sensor[1]&~hall_sensor[2]&user_input[1]&user_input[2] | ~hall_sensor[1]&hall_sensor[2]&user_input[1]&user_input[2] | hall_sensor[0]&~hall_sensor[1]&user_input[1]&user_input[2] | hall_sensor[1]&~hall_sensor[2]&~user_input[0]&user_input[1] | hall_sensor[0]&~hall_sensor[2]&user_input[1]&user_input[2];
 	
-	assign Ew = ~HS[0]&HS[2]&~UI[0]&UI[1]&UI[2] | HS[0]&~HS[2]&~UI[0]&UI[1]&UI[2] | HS[0]&~HS[1]&~UI[0]&UI[2] | ~HS[1]&HS[2]&~UI[0]&UI[1]&UI[2] | HS[1]&~HS[2]&~UI[0]&UI[1]&UI[2] | ~HS[0]&HS[1]&~UI[0]&UI[1];
+	assign Ew = hall_sensor[0]&~hall_sensor[2]&user_input[0]&~user_input[2] | hall_sensor[0]&~hall_sensor[1]&user_input[0]&~user_input[2] | hall_sensor[1]&~hall_sensor[2]&user_input[0]&~user_input[2] | ~hall_sensor[0]&hall_sensor[1]&user_input[0]&~user_input[2] | ~hall_sensor[1]&hall_sensor[2]&user_input[0]&~user_input[1] | hall_sensor[1]&~hall_sensor[2]&user_input[0]&~user_input[1] | hall_sensor[0]&~hall_sensor[1]&~user_input[1]&user_input[2] | ~hall_sensor[0]&hall_sensor[2]&user_input[0]&~user_input[2] | hall_sensor[0]&~hall_sensor[1]&user_input[0]&~user_input[1] | hall_sensor[0]&~hall_sensor[2]&user_input[0]&~user_input[1] | ~hall_sensor[1]&hall_sensor[2]&user_input[0]&~user_input[2] | ~hall_sensor[0]&hall_sensor[1]&user_input[0]&~user_input[1] | ~hall_sensor[0]&hall_sensor[1]&user_input[1]&~user_input[2] | ~hall_sensor[0]&hall_sensor[2]&user_input[0]&~user_input[1];
 	
-	assign Fw = HS[0]&~HS[1]&~UI[0]&UI[1]&~UI[2] | HS[0]&~HS[1]&UI[0]&~UI[1]&~UI[2] | ~HS[0]&HS[1]&~UI[0]&~UI[1]&UI[2] | HS[0]&~HS[2]&UI[0]&~UI[1]&~UI[2] | ~HS[0]&HS[1]&UI[0]&~UI[1]&~UI[2] | ~HS[1]&HS[2]&UI[0]&~UI[1]&~UI[2] | ~HS[0]&HS[2]&UI[0]&~UI[1]&~UI[2] | HS[1]&~HS[2]&UI[0]&~UI[1]&~UI[2];
+	assign Fw = hall_sensor[0]&~hall_sensor[2]&user_input[1]&user_input[2] | hall_sensor[1]&~hall_sensor[2]&user_input[1]&user_input[2] | ~hall_sensor[0]&hall_sensor[2]&user_input[1]&user_input[2] | ~hall_sensor[1]&hall_sensor[2]&user_input[1]&user_input[2] | ~hall_sensor[0]&hall_sensor[1]&user_input[1]&user_input[2] | ~hall_sensor[0]&hall_sensor[1]&~user_input[0]&user_input[2] | hall_sensor[0]&~hall_sensor[1]&~user_input[0]&user_input[1] | hall_sensor[0]&~hall_sensor[1]&user_input[1]&user_input[2];
 	
 	
-	always@(posedge clk)begin  //introduces a dead-time that prevents power transistors in the same bridge from being on at the same time, because if they did then that would cause a short in  the battery. This part however can be removed if the gate drivers has this capability. This dead-time needs to be adjusted based on the turn off/on delay of the power trans used.
+	/*
+	introduces a dead-time that prevents power transistors in the same bridge from being on at the same time, because if they did then that would cause a short in  the battery. This part however can be removed if the gate drivers has this capability. This dead-time needs to be adjusted based on the turn off/on delay of the power trans used.
+	*/
+	always@(posedge clk)begin 
 	
 		Ar[0] <= Aw&~Br[1];
 		Ar[1] <= Ar[0]; 
@@ -54,7 +57,7 @@ module CommutationControl(
 	end
 	
 
-	assign PT = {Ar[1],Br[1],Cr[1],Dr[1],Er[1],Fr[1]};
+	assign bridge_signal = {Ar[1],Br[1],Cr[1],Dr[1],Er[1],Fr[1]};
 
 
 
